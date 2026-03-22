@@ -2,7 +2,6 @@
 
 import { useState, useEffect, useRef } from "react";
 import { useLang } from "@/context/LangContext";
-import { joinWaitlist } from "@/lib/supabase";
 
 const copy = {
   pt: {
@@ -11,11 +10,9 @@ const copy = {
     labelEmail:   "Email",
     placeEmail:   "carlos@email.com",
     submit:       "ENTRAR NA LISTA",
-    submitting:   "A GUARDAR...",
+    submitting:   "A ENVIAR...",
     successTitle: "ESTÁS DENTRO! ✦",
-    successSub:   "Vais ser avisado assim que a app estiver disponível em Luanda.",
-    dupTitle:     "JÁ ESTÁS NA LISTA",
-    dupSub:       "Este email já foi registado. Vais receber notificações em breve.",
+    successSub:   "Enviámos uma confirmação para o teu email. Vais ser avisado assim que a app lançar.",
     errorMsg:     "Algo correu mal. Tenta novamente.",
     required:     "Campo obrigatório",
     invalidEmail: "Email inválido",
@@ -28,11 +25,9 @@ const copy = {
     labelEmail:   "Email",
     placeEmail:   "carlos@email.com",
     submit:       "JOIN THE LIST",
-    submitting:   "SAVING...",
+    submitting:   "SENDING...",
     successTitle: "YOU'RE IN! ✦",
-    successSub:   "We'll notify you as soon as the app is available in Luanda.",
-    dupTitle:     "ALREADY REGISTERED",
-    dupSub:       "This email is already on the list. You'll receive notifications soon.",
+    successSub:   "We sent a confirmation to your email. You'll be notified as soon as the app launches.",
     errorMsg:     "Something went wrong. Please try again.",
     required:     "Required field",
     invalidEmail: "Invalid email",
@@ -42,19 +37,19 @@ const copy = {
 };
 
 interface Props {
-  open: boolean;
+  open:    boolean;
   onClose: () => void;
 }
 
-type Status = "idle" | "loading" | "success" | "duplicate" | "error";
+type Status = "idle" | "loading" | "success" | "error";
 
 export default function WaitlistModal({ open, onClose }: Props) {
   const { lang } = useLang();
   const c = copy[lang];
-  const overlayRef = useRef<HTMLDivElement>(null);
+  const overlayRef    = useRef<HTMLDivElement>(null);
   const firstInputRef = useRef<HTMLInputElement>(null);
 
-  const [form, setForm] = useState({ email: "" });
+  const [form, setForm]     = useState({ email: "" });
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [status, setStatus] = useState<Status>("idle");
 
@@ -88,13 +83,10 @@ export default function WaitlistModal({ open, onClose }: Props) {
 
   const validate = () => {
     const e: Record<string, string> = {};
-
-    if (!form.email.trim()) {
+    if (!form.email.trim())
       e.email = c.required;
-    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) {
+    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email))
       e.email = c.invalidEmail;
-    }
-
     setErrors(e);
     return Object.keys(e).length === 0;
   };
@@ -105,14 +97,23 @@ export default function WaitlistModal({ open, onClose }: Props) {
 
     setStatus("loading");
 
-    const result = await joinWaitlist({
-      email: form.email,
-      preferred_lang: lang,
-    });
+    try {
+      const res = await fetch("/api/waitlist", {
+        method:  "POST",
+        headers: { "Content-Type": "application/json" },
+        body:    JSON.stringify({ email: form.email, preferred_lang: lang }),
+      });
 
-    if (result.ok) setStatus("success");
-    else if (result.duplicate) setStatus("duplicate");
-    else setStatus("error");
+      const data = await res.json();
+
+      if (res.ok && data.ok) {
+        setStatus("success");
+      } else {
+        setStatus("error");
+      }
+    } catch {
+      setStatus("error");
+    }
   };
 
   const set = (key: keyof typeof form) => (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -146,20 +147,18 @@ export default function WaitlistModal({ open, onClose }: Props) {
       >
         <div className="h-px bg-gradient-to-r from-transparent via-gold to-transparent" />
 
-        {status === "success" || status === "duplicate" ? (
+        {status === "success" ? (
+          /* ── Success state ── */
           <div className="p-8 text-center">
             <div className="w-16 h-16 rounded-full bg-gold-bg border border-gold flex items-center justify-center text-2xl mx-auto mb-6">
-              {status === "success" ? "✓" : "✦"}
+              ✓
             </div>
-
             <h3 className="font-display text-3xl tracking-widest text-gold mb-3">
-              {status === "success" ? c.successTitle : c.dupTitle}
+              {c.successTitle}
             </h3>
-
             <p className="text-stone text-sm leading-relaxed mb-8">
-              {status === "success" ? c.successSub : c.dupSub}
+              {c.successSub}
             </p>
-
             <button
               onClick={handleClose}
               className="w-full bg-gold hover:bg-gold-light text-ink py-3.5 rounded-2xl font-display text-lg tracking-widest transition-colors"
@@ -168,6 +167,7 @@ export default function WaitlistModal({ open, onClose }: Props) {
             </button>
           </div>
         ) : (
+          /* ── Form state ── */
           <div className="p-6 sm:p-8">
             <div className="flex items-start justify-between mb-6">
               <div>
@@ -200,7 +200,7 @@ export default function WaitlistModal({ open, onClose }: Props) {
             </div>
 
             <form onSubmit={handleSubmit} noValidate className="space-y-4">
-              <Field label={c.labelEmail} error={errors.email} inputRef={firstInputRef}>
+              <Field label={c.labelEmail} error={errors.email}>
                 <input
                   ref={firstInputRef}
                   type="email"
@@ -243,8 +243,8 @@ function Field({
   error,
   children,
 }: {
-  label: string;
-  error?: string;
+  label:    string;
+  error?:   string;
   children: React.ReactNode;
 }) {
   return (
