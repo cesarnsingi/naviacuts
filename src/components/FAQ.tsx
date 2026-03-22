@@ -2,14 +2,14 @@
 
 import { useState } from "react";
 import { useWaitlist } from "@/context/WaitlistContext";
-import { useLang }     from "@/context/LangContext";
+import { useLang } from "@/context/LangContext";
 
 const content = {
   pt: {
     eyebrow: "FAQ",
-    title:   "PERGUNTAS",
-    accent:  "FREQUENTES",
-    sub:     "Tudo o que precisas de saber antes de descarregar a app.",
+    title: "PERGUNTAS",
+    accent: "FREQUENTES",
+    sub: "Tudo o que precisas de saber antes de descarregar a app.",
     faqs: [
       {
         q: "A app é gratuita?",
@@ -44,15 +44,15 @@ const content = {
         a: "Sim. Podes adicionar barbeiros aos teus favoritos e aceder directamente ao calendário deles. A app lembra-se das tuas preferências.",
       },
     ],
-    cta:    "Entrar na Lista de Espera",
+    cta: "Entrar na Lista de Espera",
     ctaSub: "Ainda tens dúvidas? Fala connosco pelo WhatsApp.",
     whatsapp: "Falar no WhatsApp",
   },
   en: {
     eyebrow: "FAQ",
-    title:   "FREQUENTLY",
-    accent:  "ASKED",
-    sub:     "Everything you need to know before downloading the app.",
+    title: "FREQUENTLY",
+    accent: "ASKED",
+    sub: "Everything you need to know before downloading the app.",
     faqs: [
       {
         q: "Is the app free?",
@@ -87,17 +87,17 @@ const content = {
         a: "Yes. You can add barbers to your favourites and access their calendar directly. The app remembers your preferences.",
       },
     ],
-    cta:    "Join the Waitlist",
+    cta: "Join the Waitlist",
     ctaSub: "Still have questions? Chat with us on WhatsApp.",
     whatsapp: "Chat on WhatsApp",
   },
 };
 
 export default function FAQ() {
-  const { lang }      = useLang();
+  const { lang } = useLang();
   const { openModal } = useWaitlist();
   const c = content[lang];
-  const [openIdx, setOpenIdx] = useState<number | null>(0);
+  const [openIdx, setOpenIdx] = useState<number | null>(null);
 
   return (
     <section id="faq" className="relative py-32">
@@ -108,7 +108,9 @@ export default function FAQ() {
         <div className="text-center mb-16 reveal">
           <p className="text-gold text-xs tracking-widest2 font-semibold mb-4">{c.eyebrow}</p>
           <h2 className="font-display text-[clamp(2.5rem,6vw,5rem)] tracking-widest text-cream leading-none">
-            {c.title}<br /><span className="text-shimmer">{c.accent}</span>
+            {c.title}
+            <br />
+            <span className="text-shimmer">{c.accent}</span>
           </h2>
           <p className="text-stone text-sm mt-6 font-light">{c.sub}</p>
         </div>
@@ -120,7 +122,7 @@ export default function FAQ() {
             return (
               <div
                 key={`${lang}-${i}`}
-                className={`reveal delay-${(i % 3) + 1} glass rounded-2xl overflow-hidden transition-all duration-300 ${
+                className={`reveal delay-${(i % 3) + 1} glass rounded-2xl transition-all duration-300 ${
                   isOpen ? "border-gold/30" : "hover:border-ink-4/60"
                 }`}
               >
@@ -129,9 +131,11 @@ export default function FAQ() {
                   className="w-full flex items-center justify-between px-6 py-5 text-left group"
                   aria-expanded={isOpen}
                 >
-                  <span className={`text-sm font-medium tracking-wide pr-4 transition-colors ${
-                    isOpen ? "text-gold" : "text-cream group-hover:text-gold"
-                  }`}>
+                  <span
+                    className={`text-sm font-medium tracking-wide pr-4 transition-colors ${
+                      isOpen ? "text-gold" : "text-cream group-hover:text-gold"
+                    }`}
+                  >
                     {faq.q}
                   </span>
                   <span
@@ -143,15 +147,12 @@ export default function FAQ() {
                   </span>
                 </button>
 
-                <div
-                  className={`overflow-hidden transition-all duration-300 ${
-                    isOpen ? "max-h-96" : "max-h-0"
-                  }`}
-                >
-                  <p className="px-6 pb-6 text-stone text-sm leading-relaxed font-light border-t border-ink-4 pt-4">
+                {/* Answer stays visible until closed */}
+                {isOpen && (
+                  <div className="px-6 pb-6 text-stone text-sm leading-relaxed font-light border-t border-ink-4 pt-4">
                     {faq.a}
-                  </p>
-                </div>
+                  </div>
+                )}
               </div>
             );
           })}
