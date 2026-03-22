@@ -1,5 +1,4 @@
 "use client";
-import supabase from "@/config/supabaseClient";
 
 import { useEffect } from "react";
 import { LangProvider }     from "@/context/LangContext";
