@@ -660,6 +660,9 @@ video {
 .inline-block {
   display: inline-block;
 }
+.inline {
+  display: inline;
+}
 .flex {
   display: flex;
 }
@@ -731,6 +734,9 @@ video {
 }
 .h-px {
   height: 1px;
+}
+.min-h-0 {
+  min-height: 0px;
 }
 .min-h-\[200px\] {
   min-height: 200px;
@@ -865,6 +871,10 @@ video {
   --tw-rotate: -45deg;
   transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
 }
+.rotate-0 {
+  --tw-rotate: 0deg;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+}
 .rotate-45 {
   --tw-rotate: 45deg;
   transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
@@ -922,6 +932,12 @@ video {
 }
 .grid-cols-3 {
   grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+.grid-rows-\[0fr\] {
+  grid-template-rows: 0fr;
+}
+.grid-rows-\[1fr\] {
+  grid-template-rows: 1fr;
 }
 .flex-col {
   flex-direction: column;
@@ -1326,9 +1342,6 @@ video {
 .pb-6 {
   padding-bottom: 1.5rem;
 }
-.pr-4 {
-  padding-right: 1rem;
-}
 .pt-1 {
   padding-top: 0.25rem;
 }
@@ -1556,6 +1569,11 @@ video {
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   transition-duration: 150ms;
 }
+.transition-\[grid-template-rows\] {
+  transition-property: grid-template-rows;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
 .transition-all {
   transition-property: all;
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
@@ -1599,6 +1617,9 @@ video {
 }
 .duration-700 {
   transition-duration: 700ms;
+}
+.ease-in-out {
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&display=swap');
@@ -1766,9 +1787,6 @@ body {
 }
 .hover\:border-gold\/60:hover {
   border-color: rgb(201 168 76 / 0.6);
-}
-.hover\:border-ink-4\/60:hover {
-  border-color: rgb(42 42 42 / 0.6);
 }
 .hover\:border-ink-4\/80:hover {
   border-color: rgb(42 42 42 / 0.8);

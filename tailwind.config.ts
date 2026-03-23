@@ -6,6 +6,11 @@ const config: Config = {
     "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
+  safelist: [
+    "grid-rows-[0fr]",
+    "grid-rows-[1fr]",
+    "transition-[grid-template-rows]",
+  ],
   theme: {
     extend: {
       colors: {
