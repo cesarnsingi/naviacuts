@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect }        from "react";
 import { LangProvider }     from "@/context/LangContext";
 import { WaitlistProvider } from "@/context/WaitlistContext";
 import { useWaitlist }      from "@/context/WaitlistContext";
