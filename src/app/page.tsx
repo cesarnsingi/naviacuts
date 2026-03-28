@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect }        from "react";
+import { useEffect } from "react";
 import { LangProvider }     from "@/context/LangContext";
 import { WaitlistProvider } from "@/context/WaitlistContext";
 import { useWaitlist }      from "@/context/WaitlistContext";
@@ -13,6 +13,7 @@ import Barbers              from "@/components/Barbers";
 import HowItWorks           from "@/components/HowItWorks";
 import FAQ                  from "@/components/FAQ";
 import About                from "@/components/About";
+import Booking              from "@/components/Booking";
 import Download             from "@/components/Download";
 import Footer               from "@/components/Footer";
 
@@ -59,6 +60,7 @@ function PageContent() {
         <HowItWorks />
         <FAQ />
         <About />
+        <Booking />
         <Download />
         <Footer />
       </main>

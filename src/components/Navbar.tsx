@@ -9,6 +9,7 @@ const copy = {
     nav: [
       { label: "Barbeiros",     href: "#barbers"      },
       { label: "Como Funciona", href: "#how-it-works"  },
+      { label: "Marcações",     href: "#booking"       },
       { label: "FAQ",           href: "#faq"           },
       { label: "Sobre Nós",     href: "#about"         },
     ],
@@ -24,6 +25,7 @@ const copy = {
     nav: [
       { label: "Barbers",      href: "#barbers"      },
       { label: "How It Works", href: "#how-it-works"  },
+      { label: "Bookings",     href: "#booking"       },
       { label: "FAQ",          href: "#faq"           },
       { label: "About",        href: "#about"         },
     ],
